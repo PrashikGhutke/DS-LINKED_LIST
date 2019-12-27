@@ -1,0 +1,170 @@
+#include <iostream>
+using namespace std;
+struct node
+{
+        int data;
+        node *next;
+};
+typedef struct node node;
+class Link
+{
+        node *head;
+        node *temp;
+        int totnode;
+        public:
+                Link();
+                void cList();
+                node* creatNode();
+                void insertBeg();
+                void insertEnd();
+                void insertP();
+                void show();
+                void delBeg();
+                void delEnd();
+                void delMid();
+                void getData();
+};
+Link :: Link()
+{
+        head = NULL;
+        temp = NULL;
+        totnode = 0;
+}
+void Link :: cList()
+{
+        node *newNode = creatNode();
+        head = newNode;
+        temp = head;
+}
+node* Link :: creatNode()
+{
+        node *newNode = new node;
+        int n;
+         cout<<"Enter The Data In The Node :"<<endl;
+         cin>>n;
+        newNode->data = n;
+        newNode->next = NULL;
+        return newNode;
+}
+void Link :: insertBeg()
+{
+        node *newNode = creatNode();
+        newNode->next = head;
+        head = newNode;
+        temp = head;
+}
+void Link :: insertEnd()
+{
+        node *newNode =  creatNode();
+        while(temp != NULL)
+        {
+                temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->next = NULL;
+}
+void Link :: insertP()
+{
+        temp = head;
+        int pos;
+        node *newNode = creatNode();
+        cout<<"Enter The Position :"<<endl;
+        cin>>pos;
+        for(int i = 0;i<pos;i++)
+        {
+                temp = temp->next;
+        }
+        newNode->next = temp->next;
+        temp->next = newNode;
+
+}
+void Link :: show()
+{
+        temp = head;
+        while(temp->next != NULL )
+        {
+                cout<<" "<<temp->data<<endl;
+                temp = temp->next;
+        }
+}
+void Link :: delBeg()
+{
+        if(head == NULL)
+                cout<<"EMPTY"<<endl;
+        else if(head->next = NULL)
+                {
+                        delete head;
+                        head = NULL;
+                }
+        else
+        {
+                node *t = head;
+                head = head->next;
+                delete t;
+        }
+}
+void Link :: delEnd()
+{
+        node *t = head;
+        while(t->next->next != NULL)
+        {
+                t = t->next;
+        }
+        delete (t->next);
+        t->next = NULL ;
+}
+void Link :: delMid()
+{
+        node *t = head;
+        int loc;
+        cout<<"Enter The Location:"<<endl;
+        cin>>loc;
+        for(int i = 0;i<loc;i++)
+                t = t->next;
+        node *t1 = t->next;
+        t1->next = t->next->next;
+        delete t1;
+}
+void Link :: getData()
+{
+        int ch;
+        do
+        {
+                cout<<"1.InsertBeg\n2.InsertEnd\n3.InsertMid\n4.DelBeg\n5.DelEnd\n6.DelMid\n7.Show\n8.Exit"<<endl;
+                cout<<"Enter The Choice :"<<endl;
+                cin>>ch;
+
+                switch(ch)
+                {
+                        case 1:
+                                insertBeg();
+                                break;
+                        case 2:
+                                insertEnd();
+                                break;
+                        case 3:
+                                insertP();
+                                break;
+                        case 4:
+                                delBeg();
+                                break;
+                        case 5:
+                                delEnd();
+                                break;
+                        case 6:
+                                delMid();
+                                break;
+                        case 7:
+                                show();
+                                break;
+                }
+        }while(ch!=8);
+
+}
+int main()
+{
+        Link obj ;
+        obj.cList();
+        obj.getData();
+        return 0;
+}

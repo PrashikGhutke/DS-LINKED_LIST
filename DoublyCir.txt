@@ -1,0 +1,214 @@
+#include <iostream>
+using namespace std;
+struct node
+{
+        int data;
+        node *next;
+        node *prev;
+};
+typedef struct node Node;
+class Link
+{
+        Node *first;
+        Node *last;
+        int totNode;
+        public:
+                Link();
+                Node* creatNode(int );
+                void addNode(int );
+                bool isEmpty();
+                void insertNode(int ,int );
+                void delNode(int);
+                void display();
+                void getData();
+                void reverse();
+};
+Link :: Link()
+{
+        first = NULL;
+        last = NULL;
+        totNode = 0;
+}
+node* Link :: creatNode(int n)
+{
+        Node *newNode = new Node;
+        if(newNode == NULL)
+                cout<<"Memory Is Fulled"<<endl;
+        newNode->data = n;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+        return newNode;
+}
+bool Link :: isEmpty()
+{
+        if(first == NULL && last == NULL )
+                return true;
+        else
+                return false;
+}
+void Link :: addNode(int n)
+{
+        Node *newNode = creatNode(n);
+        if(isEmpty())
+        {
+                first = newNode;
+                last = newNode;
+        }
+        else
+        {
+                last->next = newNode;
+                newNode->prev = last;
+                newNode->next = first;
+                 last = newNode;
+                 first->prev = last;
+
+        }
+        totNode++;
+}
+void Link :: insertNode(int data,int pos)
+{
+        Node *newNode = creatNode(data);
+        if(pos == 1)
+        {
+                newNode->next = first;
+                newNode->prev = last;
+                first->prev = newNode;
+                first = newNode;
+        }
+        else if(pos>totNode)
+        {
+                addNode(data);
+        }
+        else
+        {
+                Node *temp = first;
+                for(int i =1;i<pos-1;i++)
+                {
+                        temp = temp->next;
+                }
+                newNode->next = temp->next;
+                newNode->prev = temp;
+                temp->next = newNode ;
+        }
+        totNode++;
+}
+void Link :: delNode(int data)
+{
+        if(isEmpty())
+                cout<<"List Is Empty"<<endl;
+        Node *temp = first;
+        if(first->data == data)
+        {       temp = first;
+                first = first->next;
+                first->prev = last;
+                delete temp;
+                return ;
+        }
+        else
+                {
+                        while(temp->next->data !=data)
+                         {
+                                 temp=temp->next;
+                        }
+                        if(temp->next==last)
+                        {
+                                  Node* n=temp->next;;
+                                last=temp;
+                                last->next=first;
+                                      delete n;
+                        }
+                         else
+                        {
+                                Node* n=temp->next;
+                                temp->next=n->next;
+                                temp->next->prev = temp;
+                                delete n;
+                        }
+                totNode--;
+                }
+                if(totNode==0)
+                {
+                         first=last=NULL;
+                }
+
+}
+void Link :: display()
+{
+                if(isEmpty())
+                {
+                        cout<<"LIST IS EMPTY"<<endl;
+                        return;
+                }
+                else
+                {
+                        Node *temp;
+                        for(temp=first;temp->next!=first;temp=temp->next)
+                        {
+                        cout<<" "<<temp->data;
+                        }
+                        cout<<" "<<temp->data;
+
+
+                cout<<endl;
+                }
+}
+void Link :: reverse()
+{
+        if(isEmpty())
+        {
+                cout<<"List Is Empty"<<endl;
+                return ;
+        }
+        else
+        {
+                Node *temp;
+                for(temp =last;temp->prev!=last;temp=temp->prev)
+                {
+                        cout<<" "<<temp->data;
+                }
+                cout<<" "<<temp->data;
+                cout<<endl;
+        }
+}
+        void Link :: getData()
+        {
+                int ch,num,pos;
+                do
+                {
+                cout<<"1.Insert Node\n2.Insert AT Position\n3.Delete Node\n4.Display\n5.Reverse\n6.Exit"<<endl;
+                cout<<"Enter The Choice:"<<endl;
+                cin>>ch;
+                switch(ch)
+                {
+                        case 1:
+                                cout<<"Enter The Data:"<<endl;
+                                cin>>num;
+                                addNode(num);
+                                break;
+                        case 2:
+                                cout<<"Enter The Data"<<endl;
+                                cin>>num;
+                                cout<<"Enter The Position:"<<endl;
+                                cin>>pos;
+                                insertNode(num,pos);
+                                break;
+                        case 3:
+                                cout<<"Enter Data For Deletion:"<<endl;
+                                cin>>num;
+                                delNode(num);
+                                break;
+                        case 4:
+                                display();
+                                break;
+                        case 5:
+                                reverse();
+                                break;
+                }
+        }while(ch!=6);
+}
+int main()
+{
+        Link obj;
+        obj.getData();
+        return 0;
+}
